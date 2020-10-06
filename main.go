@@ -3,11 +3,15 @@ package main
 import (
 	"time"
 
+	"github.com/pkg/errors"
 	log "github.com/temp/Logging-Tut/logging"
 )
 
 func main() {
+	t := time.Now()
 	log.StartLogger()
-	log.HandlerStart("Tutorial", "Started", "Example Handler", time.Now())
+	log.HandlerStart("Tutorial", "Started", "Example Handler", t)
+	log.HandlerCompleted("Tutorial", "Finished", "Example Handler", 200, t)
+	err := errors.Errorf("Example error")
+	log.HandlerError("Tutorial", "Failed", "Example Handler", err, t)
 }
-{"Handler":"Example Handler","Status":"Started","Time":"2020-10-05T20:55:05.982493-05:00","client":"Tutorial","level":"info","msg":"Handler Example Handler started","time":"2020-10-05T20:55:05-05:00"}

@@ -19,6 +19,23 @@ type Event struct {
 	message string
 }
 
+//DefaultFieldHook holds the hook interface and service names
+type DefaultFieldHook struct {
+	serviceName  string
+	instanceName string
+}
+
+//Levels interface for logrus hooks
+func (h *DefaultFieldHook) Levels() []logrus.Level {
+	return logrus.AllLevels
+}
+
+//Fire triggers the log with this field
+func (h *DefaultFieldHook) Fire(e *logrus.Entry) error {
+	e.Data["Service"] = h.serviceName
+	return nil
+}
+
 //NewLogger initializes the new logger
 func NewLogger() *Logger {
 
@@ -35,4 +52,7 @@ func NewLogger() *Logger {
 
 func StartLogger() {
 	Log = NewLogger()
+	Log.AddHook(&DefaultFieldHook{
+		serviceName: "logging tutorials",
+	})
 }
